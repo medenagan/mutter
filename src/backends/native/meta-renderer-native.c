@@ -1004,7 +1004,7 @@ meta_renderer_native_choose_egl_config (CoglDisplay  *cogl_display,
       return choose_egl_config_from_gbm_format (egl,
                                                 egl_display,
                                                 attributes,
-                                                GBM_FORMAT_XRGB8888,
+                                                GBM_FORMAT_ARGB8888,
                                                 out_config,
                                                 error);
 #ifdef HAVE_EGL_DEVICE
@@ -2127,7 +2127,7 @@ meta_renderer_native_create_surface_gbm (CoglOnscreen        *onscreen,
   struct gbm_surface *new_gbm_surface = NULL;
   EGLNativeWindowType egl_native_window;
   EGLSurface new_egl_surface;
-  uint32_t format = GBM_FORMAT_XRGB8888;
+  uint32_t format = GBM_FORMAT_ARGB8888;
   GArray *modifiers;
 
   renderer_gpu_data =
