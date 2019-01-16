@@ -1747,7 +1747,19 @@ copy_shared_framebuffer_gpu (CoglOnscreen                        *onscreen,
                                                   &error))
     {
       g_warning ("Failed to blit shared framebuffer: %s", error->message);
-      g_error_free (error);
+      g_clear_error (&error);
+
+      renderer_gpu_data->secondary.copy_mode = META_SHARED_FRAMEBUFFER_COPY_MODE_CPU;
+
+      if (!init_secondary_gpu_state_cpu_copy_mode (renderer_native, onscreen,
+                                                   renderer_gpu_data,
+                                                   secondary_gpu_state->gpu_kms,
+                                                   &error))
+        {
+          g_warning ("Failed to fall back to CPU copy mode: %s", error->message);
+          g_error_free (error);
+        }
+
       return;
     }
 
