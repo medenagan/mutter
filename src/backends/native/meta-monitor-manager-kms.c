@@ -625,7 +625,7 @@ get_gpu_paths (MetaMonitorManagerKms *manager_kms,
 
               boot_vga = g_udev_device_get_sysfs_attr_as_int (pci_device,
                                                               "boot_vga");
-              if (boot_vga == 1)
+              if (boot_vga == 0)
                 {
                   gpu_paths = g_list_append (gpu_paths, g_strdup (device_path));
                   break;
@@ -658,7 +658,7 @@ meta_monitor_manager_kms_initable_init (GInitable    *initable,
 
   manager_kms->udev = g_udev_client_new (subsystems);
 
-  gpu_paths = get_gpu_paths (manager_kms, GPU_TYPE_PRIMARY, NULL);
+  gpu_paths = get_gpu_paths (manager_kms, GPU_TYPE_PRIMARY, "/dev/dri/card0");
   if (g_list_length (gpu_paths) != 1)
     {
       g_list_free_full (gpu_paths, g_free);
