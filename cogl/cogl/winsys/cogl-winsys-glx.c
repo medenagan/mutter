@@ -1354,8 +1354,9 @@ _cogl_winsys_context_deinit (CoglContext *context)
 }
 
 static CoglBool
-_cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
-                            CoglError **error)
+_cogl_winsys_onscreen_init (CoglOnscreen     *onscreen,
+                            CoglPixelFormat  *format,
+                            CoglError       **error)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglContext *context = framebuffer->context;

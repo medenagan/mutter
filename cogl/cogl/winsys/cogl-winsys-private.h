@@ -109,7 +109,7 @@ typedef struct _CoglWinsysVtable
   (*context_create_gles2_context) (CoglContext *ctx, CoglError **error);
 
   CoglBool
-  (*onscreen_init) (CoglOnscreen *onscreen, CoglError **error);
+  (*onscreen_init) (CoglOnscreen *onscreen, CoglPixelFormat *format, CoglError **error);
 
   void
   (*onscreen_deinit) (CoglOnscreen *onscreen);

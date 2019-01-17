@@ -621,8 +621,9 @@ _cogl_winsys_destroy_gles2_context (CoglGLES2Context *gles2_ctx)
 }
 
 static CoglBool
-_cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
-                            CoglError **error)
+_cogl_winsys_onscreen_init (CoglOnscreen     *onscreen,
+                            CoglPixelFormat  *format,
+                            CoglError       **error)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglContext *context = framebuffer->context;

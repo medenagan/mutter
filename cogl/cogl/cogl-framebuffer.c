@@ -753,7 +753,7 @@ cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
           return FALSE;
         }
 
-      if (!winsys->onscreen_init (onscreen, error))
+      if (!winsys->onscreen_init (onscreen, &framebuffer->internal_format, error))
         return FALSE;
 
       /* If the winsys doesn't support dirty events then we'll report

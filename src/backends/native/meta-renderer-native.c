@@ -73,6 +73,9 @@
 #define DRM_FORMAT_INVALID 0
 #endif
 
+/* DRM and GBM formats are identical, but add the macro for legibility */
+#define DRM_FORMAT_FROM_GBM_FORMAT(format) (format)
+
 enum
 {
   PROP_0,
@@ -2589,8 +2592,9 @@ release_dumb_fb (MetaDumbBuffer *dumb_fb,
 }
 
 static gboolean
-meta_renderer_native_init_onscreen (CoglOnscreen *onscreen,
-                                    GError      **error)
+meta_renderer_native_init_onscreen (CoglOnscreen     *onscreen,
+                                    CoglPixelFormat  *cogl_pixel_format,
+                                    GError          **error)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglContext *cogl_context = framebuffer->context;
@@ -2598,6 +2602,8 @@ meta_renderer_native_init_onscreen (CoglOnscreen *onscreen,
   CoglDisplayEGL *cogl_display_egl = cogl_display->winsys;
   CoglOnscreenEGL *onscreen_egl;
   MetaOnscreenNative *onscreen_native;
+  uint32_t drm_format;
+  int ret;
 
   _COGL_RETURN_VAL_IF_FAIL (cogl_display_egl->egl_context, FALSE);
 
@@ -2606,6 +2612,14 @@ meta_renderer_native_init_onscreen (CoglOnscreen *onscreen,
 
   onscreen_native = g_slice_new0 (MetaOnscreenNative);
   onscreen_egl->platform = onscreen_native;
+
+  drm_format = DRM_FORMAT_FROM_GBM_FORMAT (GBM_FORMAT_ARGB8888);
+
+  ret = cogl_pixel_format_from_drm_format (drm_format,
+                                           cogl_pixel_format,
+                                           NULL);
+
+  g_assert (ret);
 
   /*
    * Don't actually initialize anything here, since we may not have the
@@ -2616,7 +2630,6 @@ meta_renderer_native_init_onscreen (CoglOnscreen *onscreen,
    * TODO: Turn CoglFramebuffer/CoglOnscreen into GObjects, so it's possible
    * to add backend specific properties.
    */
-
   return TRUE;
 }
 
